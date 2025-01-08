@@ -149,6 +149,9 @@ jobs:
 
       - name: Create index.yaml files and Documentation
         run: |
+          # helm-repo 디렉토리 생성 확인
+          mkdir -p helm-repo
+          
           # README.md 시작
           echo "# Helm Chart Repository" > helm-repo/README.md
           echo "" >> helm-repo/README.md
@@ -236,21 +239,27 @@ jobs:
           echo "Git Status for Helm Repository:"
           git status
           
-          # helm-repo/README.md 변경사항 확인 및 push
-          if git status --porcelain | grep "helm-repo/README.md"; then
-            echo "Changes detected in helm repository docs"
-            git add helm-repo/README.md
+          # 디버깅을 위한 디렉토리 확인
+          echo "Directory contents:"
+          ls -la helm-repo/
+          
+          # helm-repo 디렉토리 전체를 추가
+          git add helm-repo/
+          
+          # 변경사항 확인 후 커밋
+          if git status --porcelain | grep "helm-repo"; then
+            echo "Changes detected in helm repository"
             git commit -m "Update helm repository catalog [skip ci]"
             
             # push 시도 및 결과 확인
             if git push origin main; then
-              echo "Successfully pushed helm-repo/README.md"
+              echo "Successfully pushed helm repository"
             else
-              echo "Failed to push helm-repo/README.md"
+              echo "Failed to push helm repository"
               exit 1
             fi
           else
-            echo "No changes in helm repository docs"
+            echo "No changes in helm repository"
           fi
 
       # GitHub Pages 배포를 위한 아티팩트 업로드
