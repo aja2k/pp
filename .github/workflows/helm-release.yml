@@ -268,15 +268,6 @@ jobs:
         run: |
           mkdir -p _site/helm-repo
           cp -r helm-repo/* _site/helm-repo/
-          
-          # 파일 존재 확인
-          echo "Checking files:"
-          ls -la _site/helm-repo/project-a/dev/
-          cat _site/helm-repo/project-a/dev/index.yaml
-          
-          # URL 테스트 (배포 전)
-          echo "Current site structure:"
-          find _site -type f
 
       # GitHub Pages 아티팩트 업로드
       - name: Upload Pages artifact
@@ -290,10 +281,4 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for deployment
-        run: |
-          echo "Waiting for deployment to complete..."
-          sleep 30
-          curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
 
