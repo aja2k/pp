@@ -286,12 +286,3 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # 배포 확인
-      - name: Verify deployment
-        run: |
-          echo "Waiting for deployment..."
-          sleep 30  # 배포 완료 대기
-          
-          echo "Testing URLs:"
-          curl -I https://aja2k.github.io/pp/project-a/dev/index.yaml
-          curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
