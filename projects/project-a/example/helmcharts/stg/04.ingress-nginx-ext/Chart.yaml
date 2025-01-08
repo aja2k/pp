@@ -1,0 +1,17 @@
+apiVersion: v2
+name: stg-ingress-nginx
+description: A Helm chart for ingress-nginx
+type: application
+version: 4.11.2
+appVersion: "1.11.2"
+
+# 외부 차트 의존성 선언
+dependencies:
+  - name: ingress-nginx
+    version: 4.11.2
+    repository: https://kubernetes.github.io/ingress-nginx
+    condition: ingress-nginx.enabled
+    tags:
+      - ingress
+
+

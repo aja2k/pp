@@ -1,0 +1,36 @@
+# Ingress Nginx 설정
+dev:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+      externalTrafficPolicy: Cluster
+      #annotations:
+        #service.beta.kubernetes.io/ncloud-load-balancer-layer-type: "nlb"
+        #service.beta.kubernetes.io/ncloud-load-balancer-internal: "false"
+        #service.beta.kubernetes.io/ncloud-load-balancer-subnet-id: "193440"
+
+    replicaCount: 2
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage: 80
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+    resources:
+      limits:
+        cpu: 300m
+        memory: 128Mi
+      requests:
+        cpu: 300m
+        memory: 128Mi
+
+  # 네임스페이스 설정
+  namespaceOverride: "ingress-nginx"

@@ -1,0 +1,6 @@
+# Metrics Server 설정
+dev:
+  enabled: true
+  args:
+    - --kubelet-insecure-tls
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname

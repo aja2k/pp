@@ -1,0 +1,17 @@
+apiVersion: v2
+name: metrics-server-dev
+description: A Helm chart for metrics-server
+type: application
+version: 1.0.1
+appVersion: "3.12.2"
+
+# 외부 차트 의존성 선언
+dependencies:
+  - name: metrics-server
+    version: 3.12.2
+    repository: https://kubernetes-sigs.github.io/metrics-server/
+    alias: dev
+    condition: metrics-server.enabled
+    tags:
+      - monitoring
+

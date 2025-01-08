@@ -1,0 +1,8 @@
+apiVersion: v2
+name: calico-dev
+description: A Helm chart for calico-CNI
+type: application
+version: 1.0.0
+appVersion: "3.28.2"
+
+

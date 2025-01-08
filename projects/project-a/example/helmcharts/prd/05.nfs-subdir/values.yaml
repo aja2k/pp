@@ -1,0 +1,19 @@
+# 컴포넌트 활성화 설정
+env: prd
+project: poc-k8s
+namespaceOverride: "prd-nfs-subdir"
+createNamespace: true 
+nfs-subdir-external-provisioner:
+  enabled: true
+  nfs:
+    server: nfs-poc.example.co.kr
+    path: /DATA/poc-prd-k8s
+  storageClass:
+    name: nfs-client
+    pathPattern: "${.PVC.name}"
+    provisionerName: cluster.local/nfs-subdir-external-provisioner
+    archiveOnDelete: false
+    onDelete: retain
+    reclaimPolicy: Retain
+
+       

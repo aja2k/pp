@@ -1,0 +1,19 @@
+# 컴포넌트 활성화 설정
+env: dev
+project: nfs-k8s
+namespaceOverride: "nfs-k8s"
+createNamespace: true 
+nfs-subdir-external-provisioner:
+  enabled: true
+  nfs:
+    server: nfs-poc.example.co.kr
+    path: /DATA/nfs-dev-k8s
+  storageClass:
+    name: nfs-client
+    pathPattern: "${.PVC.name}"
+    provisionerName: cluster.local/nfs-subdir-external-provisioner
+    archiveOnDelete: false
+    onDelete: retain
+    reclaimPolicy: Retain
+
+       

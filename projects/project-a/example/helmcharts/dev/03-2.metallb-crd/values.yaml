@@ -1,0 +1,17 @@
+
+ipAddressPool:
+  name: first-pool
+  namespace: metallb-system
+  addresses:
+    - 211.188.58.26-211.188.58.26
+  autoAssign: true
+
+l2Advertisement:
+  name: example
+  namespace: metallb-system
+  ipAddressPools:
+    - first-pool
+  interfaces:
+    - eth0
+
+

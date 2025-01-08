@@ -1,0 +1,11 @@
+apiVersion: v2
+name: argocd
+description: A Helm chart for argoCD
+type: application
+version: 1.0.1
+appVersion: "7.6.9"
+
+dependencies:
+  - name: argo-cd
+    version: 7.6.9  # 원하는 ArgoCD 버전을 지정하세요
+    repository: https://argoproj.github.io/argo-helm

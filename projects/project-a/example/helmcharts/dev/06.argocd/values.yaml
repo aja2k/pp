@@ -1,0 +1,53 @@
+argo-cd:
+  global:
+    domain: argocd.example.co.kr
+  server:
+    autoscaling:
+      enabled: true
+      minReplicas: 2      # 최소 2개로 HA 구성
+      maxReplicas: 4
+    ingress:
+      enabled: true
+      https: true
+      ingressClassName: nginx 
+      tls: 
+        - secretName: argocd-server-tls
+          hosts:
+            - argocd.example.co.kr
+    extraArgs:
+      - --insecure
+  configs:
+    params:
+      server.insecure: true  # Ingress에서 TLS를 처리하므로 ArgoCD 서버는 HTTP로 통신
+  certificate:
+    enabled: false  # 자체 서명 인증서 사용 비활성화 (외부 인증서 사용 시)
+
+  repoServer:
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+  applicationSet:
+    enabled: true
+    replicas: 2
+  notifications:
+    enabled: true
+  redis:
+    enabled: true
+  controller:
+    replicas: 2
+    metrics:
+      enabled: true
+
+tls:
+  cert: |
+    -----BEGIN CERTIFICATE-----
+    { cert }
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    { chain cert}
+    -----END CERTIFICATE-----
+  key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    { key }
+    -----END RSA PRIVATE KEY-----
