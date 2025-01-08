@@ -243,8 +243,8 @@ jobs:
           echo "Directory contents:"
           ls -la helm-repo/
           
-          # helm-repo 디렉토리 전체를 추가
-          git add helm-repo/
+          # helm-repo/README.md 추가
+          git add helm-repo/README.md
           
           # 변경사항 확인 후 커밋
           if git status --porcelain | grep "helm-repo"; then
