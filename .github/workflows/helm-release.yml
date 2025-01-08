@@ -139,37 +139,91 @@ jobs:
             fi
           done
 
-      - name: Create index.yaml files
+      - name: Install yq
         run: |
+          wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+
+      - name: Create index.yaml files and Documentation
+        run: |
+          # README.md 시작
+          echo "# Helm Chart Repository" > helm-repo/README.md
+          echo "" >> helm-repo/README.md
+          echo "## Available Charts" >> helm-repo/README.md
+          echo "" >> helm-repo/README.md
+          
           # 각 프로젝트의 환경별 index.yaml 생성
           for project_dir in helm-repo/*; do
             if [ -d "$project_dir" ]; then
               project_name=$(basename $project_dir)
               
-              # DEV 환경 index 생성
+              echo "### ${project_name}" >> helm-repo/README.md
+              echo "" >> helm-repo/README.md
+              
+              # DEV 환경 처리
               if [ -d "$project_dir/dev" ]; then
                 helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/dev/ $project_dir/dev/
+                
+                echo "#### DEV Environment" >> helm-repo/README.md
+                echo "\`\`\`bash" >> helm-repo/README.md
+                echo "helm repo add ${project_name}-dev https://aja2k.github.io/pp/helm-repo/${project_name}/dev" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
+                echo "Available Charts:" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                yq eval '.entries | keys | .[]' $project_dir/dev/index.yaml | while read chart; do
+                  version=$(yq eval ".entries.\"$chart\"[0].version" $project_dir/dev/index.yaml)
+                  description=$(yq eval ".entries.\"$chart\"[0].description" $project_dir/dev/index.yaml)
+                  echo "- $chart (version: $version)" >> helm-repo/README.md
+                  echo "  $description" >> helm-repo/README.md
+                done
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
               fi
               
-              # STG 환경 index 생성
+              # STG 환경 처리
               if [ -d "$project_dir/stg" ]; then
                 helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/stg/ $project_dir/stg/
+                
+                echo "#### STG Environment" >> helm-repo/README.md
+                echo "\`\`\`bash" >> helm-repo/README.md
+                echo "helm repo add ${project_name}-stg https://aja2k.github.io/pp/helm-repo/${project_name}/stg" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
+                echo "Available Charts:" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                yq eval '.entries | keys | .[]' $project_dir/stg/index.yaml | while read chart; do
+                  version=$(yq eval ".entries.\"$chart\"[0].version" $project_dir/stg/index.yaml)
+                  description=$(yq eval ".entries.\"$chart\"[0].description" $project_dir/stg/index.yaml)
+                  echo "- $chart (version: $version)" >> helm-repo/README.md
+                  echo "  $description" >> helm-repo/README.md
+                done
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
               fi
               
-              # PRD 환경 index 생성
+              # PRD 환경 처리
               if [ -d "$project_dir/prd" ]; then
                 helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/prd/ $project_dir/prd/
+                
+                echo "#### PRD Environment" >> helm-repo/README.md
+                echo "\`\`\`bash" >> helm-repo/README.md
+                echo "helm repo add ${project_name}-prd https://aja2k.github.io/pp/helm-repo/${project_name}/prd" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
+                echo "Available Charts:" >> helm-repo/README.md
+                echo "\`\`\`" >> helm-repo/README.md
+                yq eval '.entries | keys | .[]' $project_dir/prd/index.yaml | while read chart; do
+                  version=$(yq eval ".entries.\"$chart\"[0].version" $project_dir/prd/index.yaml)
+                  description=$(yq eval ".entries.\"$chart\"[0].description" $project_dir/prd/index.yaml)
+                  echo "- $chart (version: $version)" >> helm-repo/README.md
+                  echo "  $description" >> helm-repo/README.md
+                done
+                echo "\`\`\`" >> helm-repo/README.md
+                echo "" >> helm-repo/README.md
               fi
             fi
           done
-
-      - name: Debug directory structure
-        run: |
-          echo "Contents of helm-repo/:"
-          ls -R helm-repo/
-          
-          echo "Current working directory:"
-          pwd
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
