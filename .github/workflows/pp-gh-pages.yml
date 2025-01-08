@@ -29,44 +29,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  helm-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Install helm-docs
-        run: |
-          wget https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz
-          tar -xvf helm-docs_1.14.2_Linux_x86_64.tar.gz
-          sudo mv helm-docs /usr/local/bin/helm-docs
-          
-      - name: Generate Helm Docs
-        run: |
-          cd projects/project-a/example/helmcharts
-          for chart in */; do
-            if [ -d "$chart" ]; then
-              echo "Generating docs for $chart"
-              helm-docs -c "$chart"
-            fi
-          done
-          
-      - name: Commit changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add projects/project-a/example/helmcharts/**/README.md
-          git commit -m "chore: Update helm chart documentation" || echo "No changes to commit"
-          
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
   deploy:
-    needs: helm-docs
     runs-on: ubuntu-latest
     environment:
       name: github-pages

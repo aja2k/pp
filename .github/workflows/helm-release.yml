@@ -1,0 +1,167 @@
+name: Release Helm Charts
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+  issues: write
+  packages: write
+  deployments: write
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'projects/*/example/helmcharts/**'
+      - '.github/workflows/helm-release.yml'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Install helm-docs
+        run: |
+          wget https://github.com/norwoodj/helm-docs/releases/download/v1.11.0/helm-docs_1.11.0_Linux_x86_64.tar.gz
+          tar -xvf helm-docs_1.11.0_Linux_x86_64.tar.gz
+          sudo mv helm-docs /usr/local/bin/helm-docs
+
+      - name: Generate Helm Docs
+        run: |
+          WORKSPACE="${GITHUB_WORKSPACE}"
+          
+          # 각 프로젝트 순회
+          for project in ${WORKSPACE}/projects/*; do
+            if [ -d "$project/example/helmcharts" ]; then
+              cd $project/example/helmcharts
+              
+              # 각 환경별 문서 생성
+              for env in dev stg prd; do
+                if [ -d "$env" ]; then
+                  for chart in $env/*; do
+                    if [ -d "$chart" ]; then
+                      echo "Generating docs for $chart"
+                      helm-docs -c "$chart"
+                    fi
+                  done
+                fi
+              done
+              
+              cd ${WORKSPACE}
+            fi
+          done
+
+      - name: Create releases directories
+        run: |
+          mkdir -p .cr-release-packages
+
+      - name: Package Helm Charts
+        run: |
+          WORKSPACE="${GITHUB_WORKSPACE}"
+          
+          # 각 프로젝트 순회
+          for project in ${WORKSPACE}/projects/*; do
+            if [ -d "$project/example/helmcharts" ]; then
+              project_name=$(basename $project)
+              echo "Processing project: $project_name"
+              
+              # 환경별 디렉토리 생성
+              mkdir -p .cr-release-packages/${project_name}/{dev,stg,prd}
+              
+              cd $project/example/helmcharts
+              
+              # DEV 환경 차트 패키징
+              if [ -d "dev" ]; then
+                for dir in dev/*; do
+                  if [ -d "$dir" ]; then
+                    echo "Packaging DEV chart: $dir"
+                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/dev/
+                  fi
+                done
+              fi
+              
+              # STG 환경 차트 패키징
+              if [ -d "stg" ]; then
+                for dir in stg/*; do
+                  if [ -d "$dir" ]; then
+                    echo "Packaging STG chart: $dir"
+                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/stg/
+                  fi
+                done
+              fi
+              
+              # PRD 환경 차트 패키징
+              if [ -d "prd" ]; then
+                for dir in prd/*; do
+                  if [ -d "$dir" ]; then
+                    echo "Packaging PRD chart: $dir"
+                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/prd/
+                  fi
+                done
+              fi
+              
+              cd ${WORKSPACE}
+            fi
+          done
+
+      - name: Create index.yaml files
+        run: |
+          # 각 프로젝트의 환경별 index.yaml 생성
+          for project_dir in .cr-release-packages/*; do
+            if [ -d "$project_dir" ]; then
+              project_name=$(basename $project_dir)
+              
+              # DEV 환경 index 생성
+              if [ -d "$project_dir/dev" ]; then
+                helm repo index --url https://aja2k.github.io/pp/${project_name}/dev/ $project_dir/dev/
+              fi
+              
+              # STG 환경 index 생성
+              if [ -d "$project_dir/stg" ]; then
+                helm repo index --url https://aja2k.github.io/pp/${project_name}/stg/ $project_dir/stg/
+              fi
+              
+              # PRD 환경 index 생성
+              if [ -d "$project_dir/prd" ]; then
+                helm repo index --url https://aja2k.github.io/pp/${project_name}/prd/ $project_dir/prd/
+              fi
+            fi
+          done
+
+      - name: Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 각 프로젝트의 환경별 디렉토리 생성 및 파일 이동
+          for project_dir in .cr-release-packages/*; do
+            if [ -d "$project_dir" ]; then
+              project_name=$(basename $project_dir)
+              
+              mkdir -p helm-repo/${project_name}/{dev,stg,prd}
+              
+              # 환경별 파일 이동
+              if [ -d "$project_dir/dev" ]; then
+                mv $project_dir/dev/* helm-repo/${project_name}/dev/
+              fi
+              if [ -d "$project_dir/stg" ]; then
+                mv $project_dir/stg/* helm-repo/${project_name}/stg/
+              fi
+              if [ -d "$project_dir/prd" ]; then
+                mv $project_dir/prd/* helm-repo/${project_name}/prd/
+              fi
+            fi
+          done
+          
+          git add helm-repo/
+          git commit -m "Update Helm charts for all projects"
+          git push
