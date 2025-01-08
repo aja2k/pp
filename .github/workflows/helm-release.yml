@@ -244,10 +244,10 @@ jobs:
           ls -la helm-repo/
           
           # helm-repo 디렉토리 전체를 강제로 추가
-          git add -f helm-repo/
+          git add -f helm-repo/README.md
           
           # 변경사항 확인
-          if git status --porcelain | grep "helm-repo/"; then
+          if git status --porcelain | grep "helm-repo/README.md"; then
             echo "Changes detected in helm repository"
             git commit -m "Update helm repository [skip ci]"
             git push origin main
