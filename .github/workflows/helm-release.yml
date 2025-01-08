@@ -262,23 +262,36 @@ jobs:
             echo "No changes in helm repository"
           fi
 
-      # GitHub Pages 배포를 위한 아티팩트 업로드
+      # GitHub Pages 배포를 위한 설정
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # helm-repo 디렉토리를 _site로 복사 (GitHub Pages 표준)
+      - name: Prepare GitHub Pages structure
+        run: |
+          mkdir -p _site
+          cp -r helm-repo/* _site/
+          
+          echo "Contents of _site directory:"
+          ls -R _site/
+
+      # GitHub Pages 아티팩트 업로드
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: helm-repo/
+          path: _site  # helm-repo 대신 _site 사용
 
+      # GitHub Pages 배포
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Debug GitHub Pages deployment
+      # 배포 확인
+      - name: Verify deployment
         run: |
-          echo "Contents of helm-repo directory:"
-          ls -R helm-repo/
+          echo "Waiting for deployment..."
+          sleep 30  # 배포 완료 대기
           
-          echo "GitHub Pages URL:"
-          echo "https://aja2k.github.io/pp/helm-repo/"
-          
-          echo "Testing URL accessibility:"
+          echo "Testing URLs:"
+          curl -I https://aja2k.github.io/pp/project-a/dev/index.yaml
           curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
