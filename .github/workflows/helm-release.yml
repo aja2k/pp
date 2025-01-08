@@ -66,7 +66,7 @@ jobs:
 
       - name: Create releases directories
         run: |
-          mkdir -p .cr-release-packages
+          mkdir -p helm-repo
 
       - name: Package Helm Charts
         run: |
@@ -79,7 +79,7 @@ jobs:
               echo "Processing project: $project_name"
               
               # 환경별 디렉토리 생성
-              mkdir -p .cr-release-packages/${project_name}/{dev,stg,prd}
+              mkdir -p helm-repo/${project_name}/{dev,stg,prd}
               
               cd $project/example/helmcharts
               
@@ -88,7 +88,7 @@ jobs:
                 for dir in dev/*; do
                   if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging DEV chart: $dir"
-                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/dev/
+                    helm package "$dir" --destination ${WORKSPACE}/helm-repo/${project_name}/dev/
                   else
                     echo "Skipping non-helm chart directory: $dir"
                   fi
@@ -100,7 +100,7 @@ jobs:
                 for dir in stg/*; do
                   if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging STG chart: $dir"
-                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/stg/
+                    helm package "$dir" --destination ${WORKSPACE}/helm-repo/${project_name}/stg/
                   else
                     echo "Skipping non-helm chart directory: $dir"
                   fi
@@ -112,7 +112,7 @@ jobs:
                 for dir in prd/*; do
                   if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging PRD chart: $dir"
-                    helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/prd/
+                    helm package "$dir" --destination ${WORKSPACE}/helm-repo/${project_name}/prd/
                   else
                     echo "Skipping non-helm chart directory: $dir"
                   fi
@@ -126,31 +126,31 @@ jobs:
       - name: Create index.yaml files
         run: |
           # 각 프로젝트의 환경별 index.yaml 생성
-          for project_dir in .cr-release-packages/*; do
+          for project_dir in helm-repo/*; do
             if [ -d "$project_dir" ]; then
               project_name=$(basename $project_dir)
               
               # DEV 환경 index 생성
               if [ -d "$project_dir/dev" ]; then
-                helm repo index --url https://aja2k.github.io/pp/${project_name}/dev/ $project_dir/dev/
+                helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/dev/ $project_dir/dev/
               fi
               
               # STG 환경 index 생성
               if [ -d "$project_dir/stg" ]; then
-                helm repo index --url https://aja2k.github.io/pp/${project_name}/stg/ $project_dir/stg/
+                helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/stg/ $project_dir/stg/
               fi
               
               # PRD 환경 index 생성
               if [ -d "$project_dir/prd" ]; then
-                helm repo index --url https://aja2k.github.io/pp/${project_name}/prd/ $project_dir/prd/
+                helm repo index --url https://aja2k.github.io/pp/helm-repo/${project_name}/prd/ $project_dir/prd/
               fi
             fi
           done
 
       - name: Debug directory structure
         run: |
-          echo "Contents of .cr-release-packages/:"
-          ls -R .cr-release-packages/
+          echo "Contents of helm-repo/:"
+          ls -R helm-repo/
           
           echo "Current working directory:"
           pwd
@@ -158,7 +158,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .cr-release-packages/
+          path: helm-repo/
 
       - name: Deploy to GitHub Pages
         id: deployment
