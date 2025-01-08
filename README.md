@@ -5,7 +5,7 @@ Visit my [portfolio page](https://aja2k.github.io/pp/) for more details.
 
 ## 소개
 
-13 years and 5 months of experience as a Technical Architect, successfully completing various projects from large-scale financial system modernization to cloud migration and MLOps environment construction.
+As a Technical Architect, successfully completing various projects from large-scale financial system modernization to cloud migration and MLOps environment construction.
 
 ### 전문 분야
 - 하이브리드/멀티 클라우드 아키텍처 설계

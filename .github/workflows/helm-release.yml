@@ -228,6 +228,32 @@ jobs:
             fi
           done
 
+      - name: Commit and Push Repository Documentation
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          echo "Git Status for Helm Repository:"
+          git status
+          
+          # helm-repo/README.md 변경사항 확인 및 push
+          if git status --porcelain | grep "helm-repo/README.md"; then
+            echo "Changes detected in helm repository docs"
+            git add helm-repo/README.md
+            git commit -m "Update helm repository catalog [skip ci]"
+            
+            # push 시도 및 결과 확인
+            if git push origin main; then
+              echo "Successfully pushed helm-repo/README.md"
+            else
+              echo "Failed to push helm-repo/README.md"
+              exit 1
+            fi
+          else
+            echo "No changes in helm repository docs"
+          fi
+
+      # GitHub Pages 배포를 위한 아티팩트 업로드
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
