@@ -1,0 +1,68 @@
+apiVersion: v1
+entries:
+  prometheus:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2025-01-08T16:37:56.775576271Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 26.0.0
+    description: A Helm chart for prometheus (STG)
+    digest: 19941d8be5af9b14abab527d9966ef18a58a43f5e47b0168b85b6dce82f7e27d
+    name: prometheus
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/stg/prometheus-26.0.0.tgz
+    version: 26.0.0
+  stg-argo-rollouts:
+  - apiVersion: v2
+    appVersion: 1.7.2
+    created: "2025-01-08T16:37:56.778347329Z"
+    dependencies:
+    - name: argo-rollouts
+      repository: https://argoproj.github.io/argo-helm
+      version: 2.37.7
+    description: A Helm chart for argo-rollouts
+    digest: 6cdc21eeea70d4e7ce1c451f9117480672c81483a7ba8c8a8758967f1b586806
+    name: stg-argo-rollouts
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/stg/stg-argo-rollouts-2.37.7.tgz
+    version: 2.37.7
+  stg-ingress-nginx:
+  - apiVersion: v2
+    appVersion: 1.11.2
+    created: "2025-01-08T16:37:56.783404811Z"
+    dependencies:
+    - condition: ingress-nginx.enabled
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      tags:
+      - ingress
+      version: 4.11.2
+    description: A Helm chart for ingress-nginx
+    digest: f06f485c169a2dcc90035dfe2aabd30e836cc797eb43a39c07c9504f32843d54
+    name: stg-ingress-nginx
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/stg/stg-ingress-nginx-4.11.2.tgz
+    version: 4.11.2
+  stg-nfs-subdir:
+  - apiVersion: v2
+    appVersion: 4.0.2
+    created: "2025-01-08T16:37:56.784063699Z"
+    dependencies:
+    - condition: nfs-subdir-external-provisioner.enabled
+      name: nfs-subdir-external-provisioner
+      repository: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+      version: 4.0.18
+    description: A Helm chart for Kubernetes Cluster (STG)
+    digest: 6c00394b4324fd3a2189b7c38c397b95114d6eda06f435cf3754825fa1a0145b
+    name: stg-nfs-subdir
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/stg/stg-nfs-subdir-4.0.18.tgz
+    version: 4.0.18
+generated: "2025-01-08T16:37:56.762934489Z"

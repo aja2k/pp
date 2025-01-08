@@ -1,0 +1,68 @@
+apiVersion: v1
+entries:
+  prd-argo-rollouts:
+  - apiVersion: v2
+    appVersion: 1.7.2
+    created: "2025-01-08T16:37:56.848143873Z"
+    dependencies:
+    - name: argo-rollouts
+      repository: https://argoproj.github.io/argo-helm
+      version: 2.37.7
+    description: A Helm chart for argo-rollouts
+    digest: c16f88035ac419add6419f48c0396a6257414fbedf5ef83f8a623acfa4048c5c
+    name: prd-argo-rollouts
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/prd/prd-argo-rollouts-2.37.7.tgz
+    version: 2.37.7
+  prd-ingress-nginx-ext:
+  - apiVersion: v2
+    appVersion: 1.11.2
+    created: "2025-01-08T16:37:56.856042013Z"
+    dependencies:
+    - condition: ingress-nginx.enabled
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      tags:
+      - ingress
+      version: 4.11.2
+    description: A Helm chart for ingress-nginx
+    digest: cc83df1bb4baf41788bdf4a3f994a753c2485932fe838ef34ce0ec463bf1e2f1
+    name: prd-ingress-nginx-ext
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/prd/prd-ingress-nginx-ext-4.11.2.tgz
+    version: 4.11.2
+  prd-nfs-subdir:
+  - apiVersion: v2
+    appVersion: 4.0.2
+    created: "2025-01-08T16:37:56.857297223Z"
+    dependencies:
+    - condition: nfs-subdir-external-provisioner.enabled
+      name: nfs-subdir-external-provisioner
+      repository: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+      version: 4.0.18
+    description: A Helm chart for Kubernetes Cluster (PRD)
+    digest: 16caf09651dc8b2b7b887f0f453b5bf24b7338c4478adb06b13bb00b5fb51e3f
+    name: prd-nfs-subdir
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/prd/prd-nfs-subdir-4.0.18.tgz
+    version: 4.0.18
+  prometheus:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2025-01-08T16:37:56.86909554Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 26.0.0
+    description: A Helm chart for prometheus (PRD)
+    digest: e3f1bd474c5f989785afd2ef1adbf8d4bd032ad33dd4ee0b21d631039ada00ff
+    name: prometheus
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/prd/prometheus-26.0.0.tgz
+    version: 26.0.0
+generated: "2025-01-08T16:37:56.842660722Z"
