@@ -1,7 +1,7 @@
 name: Release Helm Charts
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
   pull-requests: write
@@ -20,6 +20,10 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -143,31 +147,11 @@ jobs:
             fi
           done
 
-      - name: Push Changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 각 프로젝트의 환경별 디렉토리 생성 및 파일 이동
-          for project_dir in .cr-release-packages/*; do
-            if [ -d "$project_dir" ]; then
-              project_name=$(basename $project_dir)
-              
-              mkdir -p helm-repo/${project_name}/{dev,stg,prd}
-              
-              # 환경별 파일 이동
-              if [ -d "$project_dir/dev" ]; then
-                mv $project_dir/dev/* helm-repo/${project_name}/dev/
-              fi
-              if [ -d "$project_dir/stg" ]; then
-                mv $project_dir/stg/* helm-repo/${project_name}/stg/
-              fi
-              if [ -d "$project_dir/prd" ]; then
-                mv $project_dir/prd/* helm-repo/${project_name}/prd/
-              fi
-            fi
-          done
-          
-          git add helm-repo/
-          git commit -m "Update Helm charts for all projects"
-          git push
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .cr-release-packages/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
