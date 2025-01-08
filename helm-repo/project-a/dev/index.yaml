@@ -1,0 +1,136 @@
+apiVersion: v1
+entries:
+  argo-rollouts:
+  - apiVersion: v2
+    appVersion: 1.7.2
+    created: "2025-01-08T17:09:14.673782321Z"
+    dependencies:
+    - name: argo-rollouts
+      repository: https://argoproj.github.io/argo-helm
+      version: 2.37.7
+    description: A Helm chart for argo-rollouts
+    digest: 8e8dc75b8ead8e44ff2fbeb65c59caa4b4ba99f46ea35188804ac8680b40e07d
+    name: argo-rollouts
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/argo-rollouts-2.37.7.tgz
+    version: 2.37.7
+  argocd:
+  - apiVersion: v2
+    appVersion: 7.6.9
+    created: "2025-01-08T17:09:14.684499406Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 7.6.9
+    description: A Helm chart for argoCD
+    digest: 2ed817c9d1d2410f4d272a946d38d138f8ca5e3355c9be10c4763a82a0436101
+    name: argocd
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/argocd-1.0.1.tgz
+    version: 1.0.1
+  calico-dev:
+  - apiVersion: v2
+    appVersion: 3.28.2
+    created: "2025-01-08T17:09:14.689101294Z"
+    description: A Helm chart for calico-CNI
+    digest: 098b3f4c06393ab2a72705b8f8e3d6cf3b89f445be12ce63cd6a4866caf9db7c
+    name: calico-dev
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/calico-dev-1.0.0.tgz
+    version: 1.0.0
+  ingress-nginx-dev:
+  - apiVersion: v2
+    appVersion: 4.11.2
+    created: "2025-01-08T17:09:14.693048927Z"
+    dependencies:
+    - alias: dev
+      condition: nginx-ingress.enabled
+      name: ingress-nginx
+      repository: https://kubernetes.github.io/ingress-nginx
+      tags:
+      - ingress
+      version: 4.11.2
+    description: A Helm chart for ingress-nginx
+    digest: ddc66c92a1aa687545f8a83dfaf15f2f82b63681ad1df27ff81e94ee8fb98324
+    name: ingress-nginx-dev
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/ingress-nginx-dev-1.0.1.tgz
+    version: 1.0.1
+  metallb-crd-dev:
+  - apiVersion: v2
+    appVersion: 0.14.8
+    created: "2025-01-08T17:09:14.693249483Z"
+    description: A Helm chart for metallb-crd
+    digest: 7ad1c7acc9d39ec7a69d67a2181ba356137e2dd3b3231f7c8c379b77c16ae071
+    name: metallb-crd-dev
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/metallb-crd-dev-1.0.0.tgz
+    version: 1.0.0
+  metallb-dev:
+  - apiVersion: v2
+    appVersion: 0.14.8
+    created: "2025-01-08T17:09:14.693632961Z"
+    description: A Helm chart for metallb
+    digest: 829a3fd0abc868b7656fd609d9cd87611ebaad4ba0c9b5937dc4203604869ba6
+    name: metallb-dev
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/metallb-dev-1.0.1.tgz
+    version: 1.0.1
+  metrics-server-dev:
+  - apiVersion: v2
+    appVersion: 3.12.2
+    created: "2025-01-08T17:09:14.694678218Z"
+    dependencies:
+    - alias: dev
+      condition: metrics-server.enabled
+      name: metrics-server
+      repository: https://kubernetes-sigs.github.io/metrics-server/
+      tags:
+      - monitoring
+      version: 3.12.2
+    description: A Helm chart for metrics-server
+    digest: 94db11f5f4ad2bb18414a8a97e0f26f2104f195c5d69369dbfc80bba50accc87
+    name: metrics-server-dev
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/metrics-server-dev-1.0.1.tgz
+    version: 1.0.1
+  nfs-k8s:
+  - apiVersion: v2
+    appVersion: 4.0.18
+    created: "2025-01-08T17:09:14.695338325Z"
+    dependencies:
+    - condition: nfs-subdir-external-provisioner.enabled
+      name: nfs-subdir-external-provisioner
+      repository: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+      version: 4.0.18
+    description: A Helm chart for NFS (DEV)
+    digest: 08db890a158e1968a06f00f0f26faaea7787ef4b947255fc6e76db1234f9b825
+    name: nfs-k8s
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/nfs-k8s-1.0.0.tgz
+    version: 1.0.0
+  prometheus:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2025-01-08T17:09:14.703328749Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 26.0.0
+    description: A Helm chart for prometheus (DEV)
+    digest: 7efca0c2748eb8bbb7c49ae2086d675d7a1024fc82f6e3a353f47f8e764c7968
+    name: prometheus
+    type: application
+    urls:
+    - https://aja2k.github.io/pp/helm-repo/project-a/dev/prometheus-26.0.0.tgz
+    version: 26.0.0
+generated: "2025-01-08T17:09:14.669994836Z"
