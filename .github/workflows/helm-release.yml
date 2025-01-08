@@ -149,7 +149,7 @@ jobs:
 
       - name: Create index.yaml files and Documentation
         run: |
-          # helm-repo 디렉토리 생성 확인
+          # helm-repo 디렉토리 생성
           mkdir -p helm-repo
           
           # README.md 시작
@@ -271,3 +271,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Debug GitHub Pages deployment
+        run: |
+          echo "Contents of helm-repo directory:"
+          ls -R helm-repo/
+          
+          echo "GitHub Pages URL:"
+          echo "https://aja2k.github.io/pp/helm-repo/"
+          
+          echo "Testing URL accessibility:"
+          curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
