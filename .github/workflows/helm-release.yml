@@ -243,17 +243,17 @@ jobs:
           echo "Directory contents:"
           ls -la helm-repo/
           
-          # helm-repo 디렉토리 전체를 강제로 추가
-          git add -f helm-repo/
+          # README.md만 강제로 추가
+          git add -f helm-repo/README.md
           
           # 변경사항 확인
-          if git status --porcelain | grep "helm-repo/"; then
-            echo "Changes detected in helm repository"
-            git commit -m "Update helm repository [skip ci]"
+          if git status --porcelain | grep "helm-repo/README.md"; then
+            echo "Changes detected in helm repository README"
+            git commit -m "Update helm repository catalog [skip ci]"
             git push origin main
-            echo "Successfully pushed helm repository"
+            echo "Successfully pushed README.md"
           else
-            echo "No changes in helm repository"
+            echo "No changes in README.md"
           fi
 
       # GitHub Pages 배포를 위한 설정
