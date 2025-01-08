@@ -70,14 +70,32 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 변경된 문서 확인 및 커밋
+          
+          echo "Git Status:"
+          git status
+          
+          # 변경사항이 있는 경우에만 커밋
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "Changes detected in helm docs"
-            git add projects/*/example/helmcharts/**/README.md
-            git commit -m "Update helm documentation"
-            git push
+            
+            # 불필요한 파일 제거
+            rm -f helm-docs_*.tar.gz LICENSE
+            
+            # README.md 변경사항만 추가
+            git add README.md
+            
+            # 커밋 생성
+            git commit -m "Update helm documentation [skip ci]"
+            
+            # 푸시 시도
+            if git push origin main; then
+              echo "Successfully pushed changes"
+            else
+              echo "Failed to push changes"
+              exit 1
+            fi
           else
-            echo "No changes in helm docs"
+            echo "No changes to commit"
           fi
 
       - name: Create releases directories
