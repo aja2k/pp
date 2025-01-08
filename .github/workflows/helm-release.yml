@@ -246,20 +246,20 @@ jobs:
           # helm-repo/README.md 추가
           git add helm-repo/README.md
           
-          # 변경사항 확인 후 커밋
-          if git status --porcelain | grep "helm-repo"; then
-            echo "Changes detected in helm repository"
+          # README.md 변경사항만 확인 후 커밋
+          if git diff --cached --quiet; then
+            echo "No changes in README.md"
+          else
+            echo "Changes detected in README.md"
             git commit -m "Update helm repository catalog [skip ci]"
             
             # push 시도 및 결과 확인
             if git push origin main; then
-              echo "Successfully pushed helm repository"
+              echo "Successfully pushed README.md"
             else
-              echo "Failed to push helm repository"
+              echo "Failed to push README.md"
               exit 1
             fi
-          else
-            echo "No changes in helm repository"
           fi
 
       # GitHub Pages 배포를 위한 설정
