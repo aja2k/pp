@@ -147,6 +147,14 @@ jobs:
             fi
           done
 
+      - name: Debug directory structure
+        run: |
+          echo "Contents of .cr-release-packages/:"
+          ls -R .cr-release-packages/
+          
+          echo "Current working directory:"
+          pwd
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
