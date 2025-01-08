@@ -1,14 +1,10 @@
-name: Release Helm Charts
+name: Release Helm Charts and Deploy Pages
 
-# GitHub Actions 권한 설정
 permissions:
-  contents: write      # helm-docs push를 위한 쓰기 권한 필요
-  pages: write        # GitHub Pages 배포 권한
-  id-token: write     # OIDC 토큰 생성 권한
-  pull-requests: write # PR 생성 및 수정 권한 (필요시)
-  issues: write       # 이슈 생성 및 수정 권한 (필요시)
-  packages: write     # 패키지 업로드 권한
-  deployments: write  # 배포 권한
+  contents: write
+  pages: write
+  id-token: write
+  deployments: write
 
 on:
   push:
@@ -16,15 +12,19 @@ on:
     paths:
       - 'projects/*/example/helmcharts/**'
       - '.github/workflows/helm-release.yml'
+      - 'css/**'
+      - 'js/**'
+      - 'libs/**'
+      - 'images/**'
+      - 'index.html'
+      - 'sass/**'
+      - 'package.json'
+      - 'gulpfile.js'
   workflow_dispatch:
 
 jobs:
-  release:
+  helm-release:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -256,44 +256,85 @@ jobs:
             echo "No changes in helm repository"
           fi
 
-      # GitHub Pages 배포를 위한 설정
+      - name: Create helm-repo artifact
+        run: |
+          tar -czf helm-repo.tar.gz helm-repo/
+        
+      - name: Upload helm-repo artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: helm-repo
+          path: helm-repo.tar.gz
+
+  pages-deploy:
+    needs: helm-release
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install -g gulp-cli
+          npm install --legacy-peer-deps
+
+      - name: Build assets
+        run: gulp
+
+      - name: Download helm-repo artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: helm-repo
+
+      - name: Extract helm-repo
+        run: |
+          tar -xzf helm-repo.tar.gz
+          mkdir -p _site
+          cp -r helm-repo _site/
+          rm helm-repo.tar.gz
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          enablement: true  # Pages 활성화
-          token: ${{ secrets.GITHUB_TOKEN }}  # 토큰 명시
 
-      # helm-repo 디렉토리 구조 유지하면서 _site로 복사
-      - name: Prepare GitHub Pages structure
-        run: |
-          mkdir -p _site/helm-repo
-          cp -r helm-repo/* _site/helm-repo/
-          
-          # 파일 존재 확인
-          echo "Checking files:"
-          ls -la _site/helm-repo/project-a/dev/
-          cat _site/helm-repo/project-a/dev/index.yaml
-          
-          # URL 테스트 (배포 전)
-          echo "Current site structure:"
-          find _site -type f
-
-      # GitHub Pages 아티팩트 업로드
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
-      # GitHub Pages 배포
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Wait for deployment
+      - name: Verify Deployment
         run: |
-          echo "Waiting for deployment to complete..."
-          sleep 30
-          curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            sleep 30
+            
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "Deployment verified successfully!"
+              exit 0
+            else
+              echo "Deployment not ready (HTTP $HTTP_CODE), retrying..."
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+            fi
+          done
+          
+          echo "Failed to verify deployment after $MAX_RETRIES attempts"
+          exit 1
 
