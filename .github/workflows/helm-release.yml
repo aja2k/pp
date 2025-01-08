@@ -82,9 +82,11 @@ jobs:
               # DEV 환경 차트 패키징
               if [ -d "dev" ]; then
                 for dir in dev/*; do
-                  if [ -d "$dir" ]; then
+                  if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging DEV chart: $dir"
                     helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/dev/
+                  else
+                    echo "Skipping non-helm chart directory: $dir"
                   fi
                 done
               fi
@@ -92,9 +94,11 @@ jobs:
               # STG 환경 차트 패키징
               if [ -d "stg" ]; then
                 for dir in stg/*; do
-                  if [ -d "$dir" ]; then
+                  if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging STG chart: $dir"
                     helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/stg/
+                  else
+                    echo "Skipping non-helm chart directory: $dir"
                   fi
                 done
               fi
@@ -102,9 +106,11 @@ jobs:
               # PRD 환경 차트 패키징
               if [ -d "prd" ]; then
                 for dir in prd/*; do
-                  if [ -d "$dir" ]; then
+                  if [ -d "$dir" ] && [ -f "$dir/Chart.yaml" ]; then
                     echo "Packaging PRD chart: $dir"
                     helm package "$dir" --destination ${WORKSPACE}/.cr-release-packages/${project_name}/prd/
+                  else
+                    echo "Skipping non-helm chart directory: $dir"
                   fi
                 done
               fi
