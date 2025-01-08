@@ -1,13 +1,14 @@
 name: Release Helm Charts
 
+# GitHub Actions 권한 설정
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-  pull-requests: write
-  issues: write
-  packages: write
-  deployments: write
+  contents: write      # helm-docs push를 위한 쓰기 권한 필요
+  pages: write        # GitHub Pages 배포 권한
+  id-token: write     # OIDC 토큰 생성 권한
+  pull-requests: write # PR 생성 및 수정 권한 (필요시)
+  issues: write       # 이슈 생성 및 수정 권한 (필요시)
+  packages: write     # 패키지 업로드 권한
+  deployments: write  # 배포 권한
 
 on:
   push:
@@ -63,6 +64,21 @@ jobs:
               cd ${WORKSPACE}
             fi
           done
+
+      - name: Commit and Push Helm Docs
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 변경된 문서 확인 및 커밋
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Changes detected in helm docs"
+            git add projects/*/example/helmcharts/**/README.md
+            git commit -m "Update helm documentation"
+            git push
+          else
+            echo "No changes in helm docs"
+          fi
 
       - name: Create releases directories
         run: |
