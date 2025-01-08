@@ -259,6 +259,9 @@ jobs:
       # GitHub Pages 배포를 위한 설정
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        with:
+          enablement: true  # Pages 활성화
+          token: ${{ secrets.GITHUB_TOKEN }}  # 토큰 명시
 
       # helm-repo 디렉토리 구조 유지하면서 _site로 복사
       - name: Prepare GitHub Pages structure
@@ -266,11 +269,14 @@ jobs:
           mkdir -p _site/helm-repo
           cp -r helm-repo/* _site/helm-repo/
           
-          echo "Contents of _site directory:"
-          ls -R _site/
+          # 파일 존재 확인
+          echo "Checking files:"
+          ls -la _site/helm-repo/project-a/dev/
+          cat _site/helm-repo/project-a/dev/index.yaml
           
-          echo "Testing directory structure:"
-          test -f _site/helm-repo/project-a/dev/index.yaml && echo "index.yaml exists" || echo "index.yaml missing"
+          # URL 테스트 (배포 전)
+          echo "Current site structure:"
+          find _site -type f
 
       # GitHub Pages 아티팩트 업로드
       - name: Upload Pages artifact
@@ -282,4 +288,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for deployment to complete..."
+          sleep 30
+          curl -I https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml
 
