@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Portfolio</title>
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="mobile-menu-open" class="shadow-large">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <!-- End #mobile-menu-toggle -->
+    <header>
+        <div id="mobile-menu-close">
+            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <ul id="menu" class="shadow">
+            <li>
+                <a href="#about">About</a>
+            </li>
+            <li>
+                <a href="#projects">Projects</a>
+            </li>
+            <li>
+                <a href="#skills">Skills</a>
+            </li>
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+    </header>
+    <!-- End header -->
+
+    <div id="lead">
+        <div id="lead-content">
+            <h1>Blake Jeon</h1>
+            <h2>Technical Architect</h2>
+            <a href="#contact" class="btn-rounded-white">Want my resume?</a>
+        </div>
+        <!-- End #lead-content -->
+
+        <div id="lead-overlay"></div>
+
+        <div id="lead-down">
+            <span>
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </span>
+        </div>
+        <!-- End #lead-down -->
+    </div>
+    <!-- End #lead -->
+
+    <div id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="heading">About Me</h2>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                        저는 13년 5개월간 Technical Architect로서 경력을 쌓아왔습니다.<br>
+                        대규모 금융권 차세대 시스템 구축부터 클라우드 전환, MLOps 환경 구축까지<br>
+                        다양한 산업군에서의 프로젝트 수행 및 기술 컨설팅을 통해 폭넓은 경험을 쌓았습니다.
+                    </p>
+                    <p>
+                        하이브리드/멀티 클라우드 아키텍처 설계, CI/CD 파이프라인 구축,<br>
+                        Cloud Native 기반 마이그레이션(U2L, L2C)에서 깊은 전문성을 보유하여 프로젝트 전체 관점에서 <br>
+                        어떻게 고객의 비지니스를 효과적으로 지원할 수 있는지 늘 고민 합니다.<br>
+                    </p>
+                    <p>
+                        현재는 Technical Architect로서 다양한 프로젝트에서 기술 리더십을 발휘하고 있으며,<br>
+                        서비스의 안정성을 목표로 한 클라우드 마이그레이션과<br>
+                        MLOps 플랫폼 구축 등 최신 기술 도입 프로젝트를 성공적으로 이끌고 있습니다.<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End #about -->
+     
+    <div id="projects" class="background-alt">
+        <h2 class="heading">Projects</h2>
+        <div class="container">
+            <div class="row">
+                <div class="project shadow-large">
+                    <div class="project-image">
+                        <img src="images/projects.png" />
+                    </div>
+                    <!-- End .project-image -->
+                    <div class="project-info">
+                        <h3>A사 차세대 IT시스템 구축 POC</h3>
+                        <p>
+                            차세대 IT 시스템 구축을 위한 POC 프로젝트에서 레거시 시스템의 클라우드 네이티브 전환. Linux와 Kubernetes 기반의 하이브리드 클라우드 환경을 설계하고, 기존 모놀리식 .NET 애플리케이션을 컨테이너 기반 Spring Boot 서비스로 현대화. GitOps 기반의 CI/CD 파이프라인을 구축하여 멀티 클러스터 환경(총 10개)에서의 자동화된 배포를 실현했으며, Terraform, Ansible, Helm 등 IaC 도구를 활용하여 인프라 프로비저닝을 자동화.
+                        </p>
+                        <a href="https://github.com/aja2k/pp/tree/main/projects/project-a">View Project</a>
+                    </div>
+                    <!-- End .project-info -->
+                </div>
+                <!-- End .project -->
+
+                <div class="project shadow-large">
+                    <div class="project-image">
+                        <img src="images/projects.png" />
+                    </div>
+                    <!-- End .project-image -->
+                    <div class="project-info">
+                        <h3>Project Name Here</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in iaculis ex. Etiam volutpat laoreet urna. Morbi ut tortor nec nulla commodo malesuada sit amet vel lacus. Fusce eget efficitur libero. Morbi dapibus porta quam laoreet placerat.
+                        </p>
+                        <a href="#">View Project</a>
+                    </div>
+                    <!-- End .project-info -->
+                </div>
+                <!-- End .project -->
+            </div>
+        </div>
+    </div>
+    <!-- End #projects -->
+
+    <div id="skills">
+        <h2 class="heading">Skills</h2>
+        <ul>
+            <!-- Cloud -->
+            <li>AWS</li>
+            <li>GCP</li>
+            <li>AZURE</li>
+            <li>NCP</li>
+            <li>KT Cloud</li>
+            
+            <!-- Container & Orchestration -->
+            <li>Docker</li>
+            <li>Kubernetes</li>
+            <li>Helm</li>
+            <li>Istio</li>
+            
+            <!-- CI/CD & IaC -->
+            <li>Jenkins</li>
+            <li>GitLab CI</li>
+            <li>ArgoCD</li>
+            <li>Terraform</li>
+            <li>Ansible</li>
+            
+            <!-- Monitoring & Logging -->
+            <li>Prometheus</li>
+            <li>Grafana</li>
+            <li>ELK Stack</li>
+            <li>WhaTap</li>
+            
+            <!-- OS & Virtualization -->
+            <li>Linux (RHEL, Ubuntu)</li>
+            <li>Unix (HP-UX, AIX, Solaris)</li>
+            <li>VMware</li>
+            <li>Hyper-V</li>
+            
+            <!-- Web & WAS -->
+            <li>Nginx</li>
+            <li>Apache</li>
+            <li>WebtoB</li>
+            <li>JEUS</li>
+            <li>WebLogic</li>
+            <li>JBoss/Wildfly</li>
+            
+            <!-- Database & Cache -->
+            <li>Oracle</li>
+            <li>MySQL</li>
+            <li>AWS RDS</li>
+            <li>AWS Aurora</li>
+            <li>PostgreSQL</li>
+            <li>MariaDB</li>
+            <li>Tibero</li>
+            <li>Redis</li>
+            
+
+            <!-- Message Queue -->
+            <li>Kafka</li>
+            <li>OpenSearch</li>
+            
+            <!-- HA -->
+            <li>HP-UX ServiceGuard</li>
+            <li>Veritas InfoScale</li>
+            
+            <!-- MLOps -->
+            <li>Kubeflow</li>
+            <li>AWS SageMaker</li>
+            <li>GCP Vertex AI</li>
+        </ul>
+    </div>
+    <!-- End #skills -->
+
+    <div id="contact">
+        <h2>Get in Touch</h2>
+        <div id="contact-form">
+            <form action="https://formspree.io/f/mgvvplzb" method="POST">
+                <input type="hidden" name="_subject" value="Contact request from portfolio website" />
+                <label>
+                    <input type="email" name="email" placeholder="Your email" required>
+                </label>
+                <label>
+                    <textarea name="message" placeholder="Your message" required></textarea>
+                </label>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <!-- End #contact-form -->
+    </div>
+    <!-- End #contact -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 copyright">
+                    <p>
+                        Copyright &copy; <span id="current-year">2025</span> Blake Jeon
+                    </p>
+                </div>
+                <div class="col-sm-2 top">
+                    <span id="to-top">
+                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+    </footer>
+    <!-- End footer -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/scripts.min.js"></script>
+</body>
+
+</html>
