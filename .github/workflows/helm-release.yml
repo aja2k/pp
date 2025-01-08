@@ -263,20 +263,23 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # helm-repo 디렉토리를 _site로 복사 (GitHub Pages 표준)
+      # helm-repo 디렉토리 구조 유지하면서 _site로 복사
       - name: Prepare GitHub Pages structure
         run: |
-          mkdir -p _site
-          cp -r helm-repo/* _site/
+          mkdir -p _site/helm-repo
+          cp -r helm-repo/* _site/helm-repo/
           
           echo "Contents of _site directory:"
           ls -R _site/
+          
+          echo "Testing directory structure:"
+          test -f _site/helm-repo/project-a/dev/index.yaml && echo "index.yaml exists" || echo "index.yaml missing"
 
       # GitHub Pages 아티팩트 업로드
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site  # helm-repo 대신 _site 사용
+          path: _site
 
       # GitHub Pages 배포
       - name: Deploy to GitHub Pages
