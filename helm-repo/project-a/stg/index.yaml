@@ -3,14 +3,14 @@ entries:
   prometheus:
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2025-01-08T15:53:28.654219874Z"
+    created: "2025-01-08T16:00:00.84478859Z"
     dependencies:
     - condition: prometheus.enabled
       name: prometheus
       repository: https://prometheus-community.github.io/helm-charts
       version: 26.0.0
     description: A Helm chart for prometheus (STG)
-    digest: d3e0e11c0430f6bc10a5b996b9ea62ba19c549018230a027406aa17a4d468209
+    digest: f83cb39d18034df062910094dacbf74546ee34cdfa747ae8c7d0f7d5c6731286
     name: prometheus
     type: application
     urls:
@@ -19,13 +19,13 @@ entries:
   stg-argo-rollouts:
   - apiVersion: v2
     appVersion: 1.7.2
-    created: "2025-01-08T15:53:28.6585173Z"
+    created: "2025-01-08T16:00:00.848949403Z"
     dependencies:
     - name: argo-rollouts
       repository: https://argoproj.github.io/argo-helm
       version: 2.37.7
     description: A Helm chart for argo-rollouts
-    digest: 7a8eacae5d1bd1274c3db6b1747ab1379728d72bc978f7c9279e88b1d0b36cd5
+    digest: 001ea54fd17ba3122b7e158ca0abb8a4798a9e9ecbfe4be50a1a2efe0521b832
     name: stg-argo-rollouts
     type: application
     urls:
@@ -34,7 +34,7 @@ entries:
   stg-ingress-nginx:
   - apiVersion: v2
     appVersion: 1.11.2
-    created: "2025-01-08T15:53:28.662545625Z"
+    created: "2025-01-08T16:00:00.852939161Z"
     dependencies:
     - condition: ingress-nginx.enabled
       name: ingress-nginx
@@ -43,7 +43,7 @@ entries:
       - ingress
       version: 4.11.2
     description: A Helm chart for ingress-nginx
-    digest: 12ddc0a1844fb93cb6acbf7c7b8633cad3eb42e1ced58f0fa3795f72881fac6e
+    digest: 314dc974458f0e02f06778e7f9cfb749c3546e25831e0e03490b3890a949af2d
     name: stg-ingress-nginx
     type: application
     urls:
@@ -52,17 +52,17 @@ entries:
   stg-nfs-subdir:
   - apiVersion: v2
     appVersion: 4.0.2
-    created: "2025-01-08T15:53:28.663214104Z"
+    created: "2025-01-08T16:00:00.853567491Z"
     dependencies:
     - condition: nfs-subdir-external-provisioner.enabled
       name: nfs-subdir-external-provisioner
       repository: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
       version: 4.0.18
     description: A Helm chart for Kubernetes Cluster (STG)
-    digest: 0251745576bdf9194b04df7faee388851563d221f65287f1ef58d393b3992e0e
+    digest: f72e1c76a8b34e44c2629fd7edaee51baa9eeab000e8a2cab5ad2188d7c817da
     name: stg-nfs-subdir
     type: application
     urls:
     - https://aja2k.github.io/pp/helm-repo/project-a/stg/stg-nfs-subdir-4.0.18.tgz
     version: 4.0.18
-generated: "2025-01-08T15:53:28.645208519Z"
+generated: "2025-01-08T16:00:00.836623768Z"
