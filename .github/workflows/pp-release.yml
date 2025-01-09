@@ -295,7 +295,7 @@ jobs:
         run: |
           # 정적 사이트 파일들을 _site로 복사
           mkdir -p _site
-          cp -r css js libs images index.html _site/
+          cp -r css js libs images index.html icons-preview.html _site/
           
           # gulp로 생성된 다른 assets가 있다면 복사
           if [ -d "dist" ]; then
