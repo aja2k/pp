@@ -49,79 +49,89 @@
         }
         #search {
             width: 100%;
+            max-width: 600px;
             padding: 10px;
-            margin-bottom: 20px;
+            margin: 20px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
         }
-        .category-nav {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .category-nav a {
-            display: block;
-            padding: 5px 10px;
+        #iconCount {
             color: #666;
-            text-decoration: none;
-        }
-        .category-nav a:hover {
-            background: #f5f5f5;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
     <input type="text" id="search" placeholder="Search icons...">
-    
-    <nav class="category-nav">
-        <a href="#web">Web Application</a>
-        <a href="#text-editor">Text Editor</a>
-        <a href="#directional">Directional</a>
-        <a href="#video-player">Video Player</a>
-        <a href="#brand">Brand</a>
-        <a href="#chart">Chart</a>
-        <a href="#currency">Currency</a>
-        <a href="#file-type">File Type</a>
-        <a href="#spinner">Spinners</a>
-        <a href="#form">Form Control</a>
-        <a href="#payment">Payment</a>
-        <a href="#chart">Chart</a>
-        <a href="#medical">Medical</a>
-    </nav>
-
-    <div class="category" id="web">
-        <h2>Web Application Icons</h2>
-        <div class="icon-grid">
-            <div class="icon-item">
-                <i class="fa fa-address-book"></i>
-                <span class="icon-name">fa-address-book</span>
-            </div>
-            <div class="icon-item">
-                <i class="fa fa-address-card"></i>
-                <span class="icon-name">fa-address-card</span>
-            </div>
-            <!-- ... more icons ... -->
-        </div>
-    </div>
-
-    <!-- Add more categories -->
+    <span id="iconCount"></span>
+    <div id="iconContainer"></div>
 
     <script>
-        // 검색 기능
-        document.getElementById('search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.icon-item').forEach(item => {
-                const iconName = item.querySelector('.icon-name').textContent.toLowerCase();
-                item.style.display = iconName.includes(searchTerm) ? '' : 'none';
-            });
-        });
+        async function loadIcons() {
+            try {
+                // Font Awesome CSS 파일 로드
+                const response = await fetch('libs/font-awesome/css/font-awesome.min.css');
+                const css = await response.text();
+
+                // CSS에서 아이콘 클래스 추출
+                const iconRegex = /\.fa-([\w-]+):before\s*{\s*content/g;
+                const icons = [];
+                let match;
+
+                while ((match = iconRegex.exec(css)) !== null) {
+                    icons.push(match[1]);
+                }
+
+                // 아이콘 정렬
+                icons.sort();
+
+                // 아이콘 그리드 생성
+                const container = document.getElementById('iconContainer');
+                const grid = document.createElement('div');
+                grid.className = 'icon-grid';
+
+                icons.forEach(icon => {
+                    const div = document.createElement('div');
+                    div.className = 'icon-item';
+                    div.innerHTML = `
+                        <i class="fa fa-${icon}"></i>
+                        <span class="icon-name">fa-${icon}</span>
+                    `;
+                    grid.appendChild(div);
+                });
+
+                container.appendChild(grid);
+
+                // 아이콘 개수 표시
+                document.getElementById('iconCount').textContent = `Total icons: ${icons.length}`;
+
+                // 검색 기능
+                const searchInput = document.getElementById('search');
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    let visibleCount = 0;
+
+                    document.querySelectorAll('.icon-item').forEach(item => {
+                        const iconName = item.querySelector('.icon-name').textContent.toLowerCase();
+                        const visible = iconName.includes(searchTerm);
+                        item.style.display = visible ? '' : 'none';
+                        if (visible) visibleCount++;
+                    });
+
+                    document.getElementById('iconCount').textContent = 
+                        searchTerm ? `Showing ${visibleCount} of ${icons.length} icons` : 
+                                   `Total icons: ${icons.length}`;
+                });
+
+            } catch (error) {
+                console.error('Error loading icons:', error);
+                document.body.innerHTML += '<p style="color: red;">Error loading icons. Please check console for details.</p>';
+            }
+        }
+
+        // 페이지 로드 시 아이콘 로드
+        window.addEventListener('load', loadIcons);
     </script>
 </body>
 </html>
