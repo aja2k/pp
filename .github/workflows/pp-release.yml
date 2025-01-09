@@ -11,7 +11,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'projects/*/example/helmcharts/**'
-      - '.github/workflows/helm-release.yml'
+      - '.github/workflows/*'
       - 'css/**'
       - 'js/**'
       - 'libs/**'
