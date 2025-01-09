@@ -291,6 +291,20 @@ jobs:
       - name: Build assets
         run: gulp
 
+      - name: Prepare site directory
+        run: |
+          # 정적 사이트 파일들을 _site로 복사
+          mkdir -p _site
+          cp -r css js libs images index.html _site/
+          
+          # gulp로 생성된 다른 assets가 있다면 복사
+          if [ -d "dist" ]; then
+            cp -r dist/* _site/
+          fi
+          
+          echo "Static site files:"
+          ls -la _site/
+
       - name: Download helm-repo artifact
         uses: actions/download-artifact@v3
         with:
@@ -299,9 +313,11 @@ jobs:
       - name: Extract helm-repo
         run: |
           tar -xzf helm-repo.tar.gz
-          mkdir -p _site
           cp -r helm-repo _site/
           rm helm-repo.tar.gz
+          
+          echo "Final _site structure:"
+          find _site -type f
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -324,13 +340,17 @@ jobs:
             echo "Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             sleep 30
             
-            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml)
+            # 정적 사이트 확인
+            SITE_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://aja2k.github.io/pp/index.html)
+            # Helm 저장소 확인
+            HELM_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://aja2k.github.io/pp/helm-repo/project-a/dev/index.yaml)
             
-            if [ "$HTTP_CODE" = "200" ]; then
-              echo "Deployment verified successfully!"
+            if [ "$SITE_CODE" = "200" ] && [ "$HELM_CODE" = "200" ]; then
+              echo "All deployments verified successfully!"
               exit 0
             else
-              echo "Deployment not ready (HTTP $HTTP_CODE), retrying..."
+              echo "Site status: $SITE_CODE, Helm status: $HELM_CODE"
+              echo "Deployment not ready, retrying..."
               RETRY_COUNT=$((RETRY_COUNT + 1))
             fi
           done
