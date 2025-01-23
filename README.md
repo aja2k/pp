@@ -81,14 +81,14 @@ technical-architect-portfolio/
    - 하이브리드 클라우드 아키텍처 설계
    - GitOps 기반 배포 자동화 구현
 
-2. [공공 정보화사업 프로젝트](/projects/project2)
+2. [공공 정보화사업 프로젝트](/projects/project-b)
    - Solaris에서 Pro-Linux로의 U2L 전환 및 시스템 현대화
    - WebtoB/JEUS/Oracle 기반 3-Tier 아키텍처 구현 (WEB A-A/WAS A-A/DB A-A)
    - DMZ와 내부망 분리를 통한 보안 강화 및 네트워크 아키텍처 최적화
    - OS, 미들웨어, 3rd Party S/W 업그레이드 및 마이그레이션 수행
    - 고객사 요구사항 기반 맞춤형 아키텍처 설계 및 구현
 
-3. [B사 Gen AI 툴(SaaS) 개발 프로젝트](/projects/project3)
+3. [B사, C사 AI MLOps 구축 프로젝트](/projects/project-c)
    - MLOps 플랫폼 구축
    - 하이브리드 클라우드 ML 파이프라인 구현
    - 서버리스 아키텍처 설계
